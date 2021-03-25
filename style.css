@@ -1,7 +1,11 @@
 html
 {
-background: black;
-color: yellow;
+background-image: url(fumon-ji.jpeg);
+background-color: black;
+background-size: 1000px 1000px;
+background-position: center;
+background-repeat: no-repeat;
+color: rgb(5, 31, 1);
 }
 
 .square
@@ -16,7 +20,7 @@ width: 195px;
 position: fixed;
 top: 50%;
 left: 50%;
-transform: translate(-250px, -250px);
+transform: translate(-300px, -300px);
 z-index: 0;
 
 
@@ -31,4 +35,63 @@ height: 600px;
 width: 600px;
 background-color: rgb(32, 36, 37);
 
+}
+
+.player-select
+{
+height: 75px;
+width: 75px;
+border-radius: 5px;
+border: solid;
+}
+.player-select:hover
+{
+height: 75px;
+width: 75px;
+border-radius: 5px;
+border: solid;
+border: solid;
+border-color: darkred;
+}
+
+.player-selected
+{
+height: 75px;
+width: 75px;
+border-radius: 6px;
+border: solid;
+border-color: darkred;
+}
+
+.player-selection-container
+{
+display: grid;
+align-items: center;
+color: yellowgreen;
+}
+
+.weapon-selection-form
+{
+
+display: none;
+border: solid darkgreen;
+background: darkslategray;
+color: yellowgreen;
+size: 30px;
+height: 400px;
+width: 350px;
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+z-index: 4;
+}
+
+.weapon-button
+{
+padding: 10px;
+background: darkred;
+border: darkslategray;
+border: solid;
+border-radius: 20px;
 }
