@@ -4,7 +4,6 @@
 //module attempt
 const gameMat = (function () 
 {
-
     let theGameMat = new Array(9);
     const initialize = () => theGameMat.fill("empty", 0, 9);
     const playerSelectLocation = (playersWeapon, matLocation) =>  { 
@@ -49,43 +48,56 @@ const gameMat = (function ()
         }
     }
 
+    function winnerCheck () 
+    {  // can improve performance by adding a quick out in inner loop
+        //horizontal check 
+       for (let startPoint = 0; startPoint <= 6; startPoint+=3) 
+       {
+                let SP = startPoint;
+                if (theGameMat[SP] != "empty") // rule out empty
+                {
+                    if (theGameMat[SP] == theGameMat[SP + 1] && theGameMat[SP] == theGameMat[SP + 2])
+                     {
+                     return true;
+                     }
+                     else
+                     {
+                     } 
+                }
+                else {}
+    
+       }
 
-  return { initialize, display, playerSelectLocation}; // add gameMat if you want to check array is correct // these Items are public
+       //vert check 
+       for (let vertPoint = 0; vertPoint <= 2; vertPoint += 1) 
+       {
+            let VSP = vertPoint;
+            console.log(VSP);
+            if (theGameMat[VSP] != "empty") // rule out empty
+            {
+                //
+                if (theGameMat[VSP] == theGameMat[VSP + 3] && theGameMat[VSP] == theGameMat[VSP + 6])
+                 {
+                console.log(VSP);
+                 return true;
+                 }
+                else
+                 {
+                 } 
+            }
+            else {}
+
+        } 
+
+
+    }
+
+
+  return { initialize, display, playerSelectLocation, winnerCheck}; // add gameMat if you want to check array is correct // these Items are public
 
 }) ();
 
 
-
-/*
-const playerSelect = (name) => 
-{    failed attempt at player factory
-    let weaponSelection = "Initialize";
-    const stateChoice = () => console.log("You chose: " + name);
-    const playerWins = (name) => console.log(name + "Wins!");
-
-       //private below here
-       const playerSelection = function openWeapons () {
-            document.getElementById("weapon-selection-form").style.display = "grid";
-            document.getElementById('weapon-selection-form').addEventListener("click", function (e)
-            {
-                let selection = e.target.id;
-                if (selection == "X")
-                {
-                    document.getElementById("weapon-selection-form").style.display = "none";
-                    return weaponSlection = selection;
-                }
-                else
-                {
-                    document.getElementById("weapon-selection-form").style.display = "none";
-                    return weaponSlection = selection;
-                }
-            });
-        }
-
-
-    return {stateChoice, name, playerWins, weaponSelection};
-}
-*/
 
 const playerMaker = (name, weapon) => {
     return { name, weapon};
@@ -93,28 +105,62 @@ const playerMaker = (name, weapon) => {
 
 
 gameController();
-//start the game
 function gameController ()
 {
     gameMat.initialize();  // set up initial emtyGameMat
     gameMat.display();  // set up initial gameboard
-
-/*
-function playerSelectMouse () {
-    document.getElementById('player-selection-container').addEventListener("click", function (e){
-    const playerName = e.target.id;;
-    console.log(e.target);
-        // need to ad unselect one too before finished. 
-        document.getElementById(e.target.id).setAttribute("class", "player-selected");
-    });
-}
-*/
 
 
     const playerOne = playerMaker("word", "X" );
     const playerTwo = playerMaker("Inu", "O");
     let playerTurn = playerOne;  // initialize first turn 
 
+    // listen for player gameboard choices
+    document.getElementById('container').addEventListener("click", function (e)
+    {
+
+    let matLocation = e.target.id;
+
+
+
+       if (gameMat.playerSelectLocation(playerTurn.weapon, matLocation)) // succesfull placement
+        { 
+
+            console.log(gameMat.winnerCheck()); // check for winner after selection
+
+
+            if(playerTurn == playerOne)
+            {
+                if (gameMat.winnerCheck()) // winner check at end of each turn
+                {alert ('winner winner chicken dinner!')}
+                else {
+                    return playerTurn = playerTwo;
+                }
+            }
+
+            else if (playerTurn == playerTwo)
+            {
+                if (gameMat.winnerCheck()) // winner check at end of each turn
+                {alert ('winner winner chicken dinner!')}
+                else{
+                return playerTurn = playerOne;
+                }
+            }
+            else {}
+        }
+        else // gameBoard said nope!
+        {
+
+        }
+    });
+
+
+
+
+
+// BELOW FOR GRAPHICAL INTERFACE IDEAS
+
+    /*
 // set up prompt to select players // Start Screen? 
     function getPlayerSelection () 
     {
@@ -145,39 +191,15 @@ function playerSelectMouse () {
         });
     }
 
-    
-
-
-
-
-
-
-
-    // listen for player gameboard choices
-    document.getElementById('container').addEventListener("click", function (e)
-    {
-
-    let matLocation = e.target.id;
-    console.log(matLocation);
-
-
-       if (gameMat.playerSelectLocation(playerTurn.weapon, matLocation)) // succesfull placement
-        { 
-            if(playerTurn == playerOne)
-            {
-            return playerTurn = playerTwo;
-            }
-
-            else if (playerTurn == playerTwo)
-            {
-            return playerTurn = playerOne;
-            }
-            else {}
-        }
-        else // gameBoard said nope!
-        {
-
-        }
+function playerSelectMouse () {
+    document.getElementById('player-selection-container').addEventListener("click", function (e){
+    const playerName = e.target.id;;
+    console.log(e.target);
+        // need to ad unselect one too before finished. 
+        document.getElementById(e.target.id).setAttribute("class", "player-selected");
     });
+}
+*/
+    
 
 }
