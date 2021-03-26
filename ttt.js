@@ -18,28 +18,31 @@ const gameMat = (function ()
             // remove existing element from display?
             const square = document.getElementById(matLocation);
             square.textContent = playersWeapon;
+            //testing graphics
+            //const theX = document.createElement('div');
+            //theX.className = "O";
+           // square.appendChild(theX);
             // square.appendChild(); for visual objects later
             // put in array to log fill
-            console.log(theGameMat[matLocation]);
             theGameMat[matLocation] = playersWeapon;
+            console.log(winnerCheck());
             return true;
         }
     }
-
+//Glitch in display ... if manage to click parent container will crash
    const display = () =>
     {
         let gameMatTracker = 0; // keep track of game mat location may need to alter later
         for(rows = 0; rows <= 2; rows++ )
         {
             
-            //add marker to array as empty? 
-
             for (columns = 0; columns <= 2; columns++)
             {
                 const square = document.createElement('div');
                 square.className = "square";
                 square.setAttribute("id", [gameMatTracker]); // sets ID to match location on game mat
-                square.textContent = theGameMat[gameMatTracker]; // add text from game mat at location matching
+                
+                //square.textContent = theGameMat[gameMatTracker]; // add text from game mat at location matching
                 gameMatTracker += 1; // newRow.setAttribute("id", [bookLocation]);   from bookLibrary?
                 const container = document.getElementById("container");
                 container.appendChild(square);
@@ -50,6 +53,8 @@ const gameMat = (function ()
 
     function winnerCheck () 
     {  // can improve performance by adding a quick out in inner loop
+        // have winner check stop game if true!!!!! 
+
         //horizontal check 
        for (let startPoint = 0; startPoint <= 6; startPoint+=3) 
        {
@@ -58,6 +63,7 @@ const gameMat = (function ()
                 {
                     if (theGameMat[SP] == theGameMat[SP + 1] && theGameMat[SP] == theGameMat[SP + 2])
                      {
+                    document.getElementById("winner-notification").style.display = "grid";
                      return true;
                      }
                      else
@@ -68,17 +74,16 @@ const gameMat = (function ()
     
        }
 
-       //vert check 
+       //vertical check 
        for (let vertPoint = 0; vertPoint <= 2; vertPoint += 1) 
        {
             let VSP = vertPoint;
-            console.log(VSP);
             if (theGameMat[VSP] != "empty") // rule out empty
             {
                 //
                 if (theGameMat[VSP] == theGameMat[VSP + 3] && theGameMat[VSP] == theGameMat[VSP + 6])
                  {
-                console.log(VSP);
+                document.getElementById("winner-notification").style.display = "grid";
                  return true;
                  }
                 else
@@ -89,6 +94,23 @@ const gameMat = (function ()
 
         } 
 
+        //diagnal check
+           let spot = 0; 
+
+                if (theGameMat[spot] != "empty" && theGameMat[spot] == theGameMat[spot+4] && theGameMat[spot] == theGameMat[spot+8] )
+                {
+                    document.getElementById("winner-notification").style.display = "grid";
+                    return true;
+                }
+                else if (theGameMat[spot +2] != "empty" && theGameMat[spot + 2] == theGameMat[spot+4] && theGameMat[spot + 2] == theGameMat[spot+6])
+                {
+                    document.getElementById("winner-notification").style.display = "grid";
+                    return true;
+                }
+                else 
+                {
+
+                }
 
     }
 
@@ -109,97 +131,46 @@ function gameController ()
 {
     gameMat.initialize();  // set up initial emtyGameMat
     gameMat.display();  // set up initial gameboard
-
-
     const playerOne = playerMaker("word", "X" );
     const playerTwo = playerMaker("Inu", "O");
     let playerTurn = playerOne;  // initialize first turn 
 
-    // listen for player gameboard choices
+
+startGame();
+ function startGame () {
+
     document.getElementById('container').addEventListener("click", function (e)
     {
 
     let matLocation = e.target.id;
+    let playerSelection = gameMat.playerSelectLocation(playerTurn.weapon, matLocation);
 
 
+            if (playerSelection) // succesfull placement playerSelection is true
+                { 
+      
+                    if(playerTurn == playerOne)
+                    {
+                        return playerTurn = playerTwo;
+                    }
 
-       if (gameMat.playerSelectLocation(playerTurn.weapon, matLocation)) // succesfull placement
-        { 
+                    else if (playerTurn == playerTwo)
+                    {
+                        return playerTurn = playerOne;
+                    }
+                    else {} // basecase
 
-            console.log(gameMat.winnerCheck()); // check for winner after selection
-
-
-            if(playerTurn == playerOne)
-            {
-                if (gameMat.winnerCheck()) // winner check at end of each turn
-                {alert ('winner winner chicken dinner!')}
-                else {
-                    return playerTurn = playerTwo;
                 }
+                
+            else // gameBoard said nope!
+            {
+
             }
 
-            else if (playerTurn == playerTwo)
-            {
-                if (gameMat.winnerCheck()) // winner check at end of each turn
-                {alert ('winner winner chicken dinner!')}
-                else{
-                return playerTurn = playerOne;
-                }
-            }
-            else {}
-        }
-        else // gameBoard said nope!
-        {
-
-        }
     });
 
+} // start game function
 
-
-
-
-// BELOW FOR GRAPHICAL INTERFACE IDEAS
-
-    /*
-// set up prompt to select players // Start Screen? 
-    function getPlayerSelection () 
-    {
-        document.getElementById('player-selection-container').addEventListener("click", function (e){
-            let playerSelection = e.target.id;
-            return playerSelection;
-        });
-        
-    }
-
-    function getPlayerWeapon ()
-    {
-
-        document.getElementById("weapon-selection-form").style.display = "grid";
-        document.getElementById('weapon-selection-form').addEventListener("click", function (e)
-        {
-            let selection = e.target.id;
-            if (selection == "X")
-            {
-                document.getElementById("weapon-selection-form").style.display = "none";
-                return selection;
-            }
-            else
-            {
-                document.getElementById("weapon-selection-form").style.display = "none";
-                return selection;
-            }
-        });
-    }
-
-function playerSelectMouse () {
-    document.getElementById('player-selection-container').addEventListener("click", function (e){
-    const playerName = e.target.id;;
-    console.log(e.target);
-        // need to ad unselect one too before finished. 
-        document.getElementById(e.target.id).setAttribute("class", "player-selected");
-    });
-}
-*/
     
 
 }
