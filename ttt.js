@@ -4,9 +4,10 @@
 //module attempt
 const gameMat = (function () 
 {
+    let lastPlayer = "ChoMama"
     let theGameMat = new Array(9);
     const initialize = () => theGameMat.fill("empty", 0, 9);
-    const playerSelectLocation = (playersWeapon, matLocation) =>  { 
+    const playerSelectLocation = (playersName, playersWeapon, matLocation) =>  { 
         if (theGameMat[matLocation] == "X" || theGameMat[matLocation] == "O" )
         {
             alert("That Spot is taken");
@@ -15,6 +16,7 @@ const gameMat = (function ()
 
         else 
         {
+            lastPlayer = playersName;
             // remove existing element from display?
             const square = document.getElementById(matLocation);
             square.textContent = playersWeapon;
@@ -63,6 +65,12 @@ const gameMat = (function ()
                 {
                     if (theGameMat[SP] == theGameMat[SP + 1] && theGameMat[SP] == theGameMat[SP + 2])
                      {
+
+
+                    let winner = lastPlayer;
+                    console.log(winner);
+                    // document.getElementById("winner").appendChild();  // when picture is available
+                    document.getElementById("winner").textContent = lastPlayer;
                     document.getElementById("winner-notification").style.display = "grid";
                      return true;
                      }
@@ -83,6 +91,9 @@ const gameMat = (function ()
                 //
                 if (theGameMat[VSP] == theGameMat[VSP + 3] && theGameMat[VSP] == theGameMat[VSP + 6])
                  {
+                    let winner = lastPlayer;
+                    console.log(winner);
+                    document.getElementById("winner").textContent = lastPlayer;
                 document.getElementById("winner-notification").style.display = "grid";
                  return true;
                  }
@@ -99,11 +110,17 @@ const gameMat = (function ()
 
                 if (theGameMat[spot] != "empty" && theGameMat[spot] == theGameMat[spot+4] && theGameMat[spot] == theGameMat[spot+8] )
                 {
+                    let winner = lastPlayer;
+                    console.log(winner);
+                    document.getElementById("winner").textContent = lastPlayer;
                     document.getElementById("winner-notification").style.display = "grid";
                     return true;
                 }
                 else if (theGameMat[spot +2] != "empty" && theGameMat[spot + 2] == theGameMat[spot+4] && theGameMat[spot + 2] == theGameMat[spot+6])
                 {
+                    let winner = lastPlayer;
+                    console.log(winner);
+                    document.getElementById("winner").textContent = lastPlayer;
                     document.getElementById("winner-notification").style.display = "grid";
                     return true;
                 }
@@ -121,56 +138,210 @@ const gameMat = (function ()
 
 
 
+
+
 const playerMaker = (name, weapon) => {
-    return { name, weapon};
+return { name, weapon};
 };
 
 
-gameController();
-function gameController ()
+
+
+
+
+
+const gameController = (function ()
 {
     gameMat.initialize();  // set up initial emtyGameMat
     gameMat.display();  // set up initial gameboard
-    const playerOne = playerMaker("word", "X" );
-    const playerTwo = playerMaker("Inu", "O");
-    let playerTurn = playerOne;  // initialize first turn 
+    let playerOne = playerMaker("bob", "X" );
+    let playerTwo = playerMaker("bill", "O");
+    let playerOneWeapon = "Fists of fury";
+    let playerOneName = "Not Selected";
 
-
-startGame();
- function startGame () {
-
-    document.getElementById('container').addEventListener("click", function (e)
+    function createPlayers ()
     {
+        playerOne = playerMaker(playerOneName, playerOneWeapon);
+        setPlayerTwo();
+        document.getElementById("player-selection-container").style.display = "none";
+        startGame(); // may move to later on in 
+        return playerOne;
+    }
 
-    let matLocation = e.target.id;
-    let playerSelection = gameMat.playerSelectLocation(playerTurn.weapon, matLocation);
+    function letsBegin ()
+    {
+    document.getElementById("start-button").style.display = "none";
+    document.getElementById("player-selection-container").style.display = "grid";
+    return true;
+    }
 
 
-            if (playerSelection) // succesfull placement playerSelection is true
-                { 
-      
-                    if(playerTurn == playerOne)
-                    {
-                        return playerTurn = playerTwo;
-                    }
-
-                    else if (playerTurn == playerTwo)
-                    {
-                        return playerTurn = playerOne;
-                    }
-                    else {} // basecase
-
-                }
-                
-            else // gameBoard said nope!
+    function setPlayerTwo ()
+    {
+        let playerTwoName = "";
+            if (playerOneName == 'Inu')
             {
-
+             playerTwoName = "Karasu";   
+            }
+            else
+            {
+                playerTwoName = "Inu";
             }
 
-    });
+            let playerTwoWeapon = "";
+            if (playerOneWeapon == 'X')
+            {
+               playerTwoWeapon = "O"; 
+            }
+            else 
+            {
+               playerTwoWeapon = "X"; 
+            }
+        
 
-} // start game function
+        playerTwo = playerMaker(playerTwoName, playerTwoWeapon);
+        return playerTwo;
+    }
+
+
+    // save variable input as weapon
+    // change weapon select class to activate  (disapble hoovering)
+
+    function setWeapon (weaponInput)
+    {
+
+        if (weaponInput == "X" )
+        {
+
+            if (document.getElementById("O").className == "player-selected") // if O already selected
+            {
+            document.getElementById("O").className = "player-select"
+            console.log("X");
+            document.getElementById("X").className = "player-selected";
+            playerOneWeapon = weaponInput;
+            return true;
+            }
+            else
+            {
+                console.log("X");
+                document.getElementById("X").className = "player-selected";
+                playerOneWeapon = weaponInput;
+                return true;
+            }
+        }
+        else if (weaponInput == "O")
+        {
+            if (document.getElementById("X").className == "player-selected") //x already selected
+            {
+                document.getElementById("X").className = "player-select"; // return x to unselected state
+                console.log("O");
+                document.getElementById("O").className = "player-selected";
+                playerOneWeapon = weaponInput;
+                return true;
+            }
+            else
+            {
+                console.log("O");
+                document.getElementById("O").className = "player-selected";
+                playerOneWeapon = weaponInput;
+                return true;
+            }
+
+        }
+        else 
+        {
+            return false;
+        }
+
+    }
+
+    function setPlayer (playerName)
+    {
+        if (playerName == "Inu")
+        {
+            if (document.getElementById("Karasu").className = "player-selected") // check if other characters are selected
+            {
+                document.getElementById("Karasu").className = "player-select"; // unselect karasu 
+                document.getElementById("Inu").className = "player-selected";
+                playerOneName = playerName;
+                console.log('playername is :' + playerOneName);
+                return true;
+            }
+            else
+            {
+                document.getElementById("Inu").className = "player-selected";
+                playerOneName = playerName;
+                console.log('playername is :' + playerOneName);
+                return true;
+            }
+
+        }
+        else if (playerName == "Karasu")
+        {   
+            if(document.getElementById("Inu").className == "player-selected")    //check for other character selections
+            {
+                document.getElementById("Inu").className = "player-select"; // de select Inu character
+                document.getElementById("Karasu").className = "player-selected";
+                playerOneName = playerName;
+                console.log('playername is :' + playerOneName);
+                return true;
+            }
+            else    // nothing selected
+            {
+                document.getElementById("Karasu").className = "player-selected";
+                playerOneName = playerName;
+                console.log('playername is :' + playerOneName);
+                return true;
+            }
+
+        }
+        else 
+        {
+            return false; // didnt complete
+        }
+
+    }
+
 
     
+    function startGame () {
+        let playerTurn = playerOne; // Initialaize starting turn. 
 
-}
+
+        document.getElementById('container').addEventListener("click", function (e)
+        {
+
+        let matLocation = e.target.id;
+        let playerSelection = gameMat.playerSelectLocation(playerTurn.name, playerTurn.weapon, matLocation);
+
+
+                if (playerSelection) // succesfull placement playerSelection is true
+                    { 
+      
+                        if(playerTurn == playerOne)
+                        {
+                            return playerTurn = playerTwo;
+                        }
+
+                        else if (playerTurn == playerTwo)
+                        {
+                         return playerTurn = playerOne;
+                        }
+                        else {
+
+                        } // basecase
+
+                    }
+                
+                else // gameBoard said nope!
+                {
+
+                }
+
+        });
+
+    } // start game function    
+
+    return {setWeapon, setPlayer, createPlayers, letsBegin,};
+
+}) (); // game Controller module end 
