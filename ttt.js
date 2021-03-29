@@ -71,6 +71,7 @@ const gameMat = (function ()
                     console.log(winner);
                     // document.getElementById("winner").appendChild();  // when picture is available
                     document.getElementById("winner").textContent = lastPlayer;
+                    document.getElementById('players-turn').style.display = "none"; 
                     document.getElementById("winner-notification").style.display = "grid";
                      return true;
                      }
@@ -94,6 +95,7 @@ const gameMat = (function ()
                     let winner = lastPlayer;
                     console.log(winner);
                     document.getElementById("winner").textContent = lastPlayer;
+                    document.getElementById('players-turn').style.display = "none";
                 document.getElementById("winner-notification").style.display = "grid";
                  return true;
                  }
@@ -113,6 +115,7 @@ const gameMat = (function ()
                     let winner = lastPlayer;
                     console.log(winner);
                     document.getElementById("winner").textContent = lastPlayer;
+                    document.getElementById('players-turn').style.display = "none";
                     document.getElementById("winner-notification").style.display = "grid";
                     return true;
                 }
@@ -121,6 +124,7 @@ const gameMat = (function ()
                     let winner = lastPlayer;
                     console.log(winner);
                     document.getElementById("winner").textContent = lastPlayer;
+                    document.getElementById('players-turn').style.display = "none";
                     document.getElementById("winner-notification").style.display = "grid";
                     return true;
                 }
@@ -132,7 +136,63 @@ const gameMat = (function ()
     }
 
 
-  return { initialize, display, playerSelectLocation, winnerCheck}; // add gameMat if you want to check array is correct // these Items are public
+    function playersTurnDisplay (player)
+    {
+      document.getElementById('players-turn').style.display = "grid"; // Needed only once but okay .. 
+   
+      if (player.name == "Inu") 
+      {
+          if (document.getElementById('turn').lastChild) // if there was a last round player remove their image
+          {
+            document.getElementById('turn').firstChild.remove(); 
+            const playerGoing = document.createElement('img');
+            playerGoing.src = "Inu.jpeg"
+            playerGoing.className = "player";
+            document.getElementById('turn').appendChild(playerGoing);
+            return true;
+          }
+          else
+          {
+            const playerGoing = document.createElement('img');
+            playerGoing.src = "Inu.jpeg"
+            playerGoing.className = "player";
+            document.getElementById('turn').appendChild(playerGoing);
+            return true;
+          }
+
+      }
+      else if (player.name == "Karasu")     
+      {
+        if (document.getElementById('turn').lastChild)  // if there was a last round player remove their image
+        {
+            document.getElementById('turn').firstChild.remove();
+          const playerGoing = document.createElement('img');
+          playerGoing.src = "Karasu.jpeg"
+          playerGoing.className = "player";
+          document.getElementById('turn').appendChild(playerGoing);
+          return true;
+        }
+        else
+        {
+          const playerGoing = document.createElement('img');
+          playerGoing.src = "Karasu.jpeg"
+          playerGoing.className = "player";
+          document.getElementById('turn').appendChild(playerGoing);
+          return true;
+        }
+
+      } 
+      else  // failsafe bascase
+      {
+      console.log("Nope");
+      return "Go Bye BYE game over"
+      }
+    }
+    
+
+
+
+  return { initialize, display, playerSelectLocation, winnerCheck, playersTurnDisplay}; // add gameMat if you want to check array is correct // these Items are public
 
 }) ();
 
@@ -305,13 +365,17 @@ const gameController = (function ()
 
     
     function startGame () {
-        let playerTurn = playerOne; // Initialaize starting turn. 
+        let playerTurn = playerOne; // Initialize starting turn. 
+        gameMat.playersTurnDisplay (playerTurn); // Initialize display for first player
+
 
 
         document.getElementById('container').addEventListener("click", function (e)
         {
 
         let matLocation = e.target.id;
+
+
         let playerSelection = gameMat.playerSelectLocation(playerTurn.name, playerTurn.weapon, matLocation);
 
 
@@ -320,11 +384,13 @@ const gameController = (function ()
       
                         if(playerTurn == playerOne)
                         {
-                            return playerTurn = playerTwo;
+                        gameMat.playersTurnDisplay(playerTwo); // changes display with player swap
+                        return playerTurn = playerTwo;
                         }
 
                         else if (playerTurn == playerTwo)
                         {
+                         gameMat.playersTurnDisplay(playerOne); // changes display with player swap
                          return playerTurn = playerOne;
                         }
                         else {

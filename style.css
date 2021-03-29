@@ -254,3 +254,25 @@ padding: 2px;
 text-align: center;
 width: 125px;
 }
+
+.players-turn-window
+{
+display: none;
+color: rgb(172, 13, 111);
+height: 90px;
+width: 90px;
+position: absolute;
+top: 7%; 
+left: 12%;
+z-index: 2;
+
+border-radius: 5px;
+border: solid;
+border-color: rgb(172, 13, 111);
+}
+
+.player
+{
+height: 90px;
+width: 90px;
+}
