@@ -14,7 +14,8 @@
             <div id="container" class="container">
             </div>
             <div></div>
-            
+            <div><img id="crow" class="crow-turn" src ="crow.png"></div>
+            <div><img id="dog" class="shiba-turn" src ="shiba.png"></div>
         </main>
     <body>
 
@@ -24,7 +25,7 @@
             <div><img id="X" class="player-select-X" onclick="gameController.setWeapon('X')" img src="xpicture.png"><br>X's</div>
 
 
-
+           
             <div><img id="Karasu" class="player-select" src="Karasu.jpeg" onclick="gameController.setPlayer('Karasu')"><br>Karasu-san</div>
             <div><img id="O" class="player-select-O" onclick="gameController.setWeapon('O')" img src="opicture.png"><br>O's</div><br>
             <button id="startGame" onclick="gameController.createPlayers()">I'm Ready and stuff</button>
@@ -34,6 +35,7 @@
     <div id="turn"></div>
 </div>
 <div id="winner-notification" class="winner-popup">Congratulations!<div id="winner"></div>is the winner!</div>
+<div id="tie-notification" class="winner-popup">TIE GAME!</div>
 <script src="ttt.js"> </script>
     
 

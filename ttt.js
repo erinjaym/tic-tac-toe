@@ -27,7 +27,9 @@ const gameMat = (function ()
             // square.appendChild(); for visual objects later
             // put in array to log fill
             theGameMat[matLocation] = playersWeapon;
+
             console.log(winnerCheck());
+            tieCheck();
             return true;
         }
     }
@@ -56,60 +58,76 @@ const gameMat = (function ()
     function winnerCheck () 
     {  // can improve performance by adding a quick out in inner loop
         // have winner check stop game if true!!!!! 
+        if (horizontalCheck() == true)
+            {
+                return true;
+            }
+        else if (verticalCheck() == true)
+        {
+            return true;
+        }
+        else if (diagnalCheck() == true)
+        {
+            return true;
+        }
+        else {return false;}
 
-        //horizontal check 
-       for (let startPoint = 0; startPoint <= 6; startPoint+=3) 
-       {
+        function horizontalCheck () {
+            for (let startPoint = 0; startPoint <= 6; startPoint+=3) 
+            {
                 let SP = startPoint;
                 if (theGameMat[SP] != "empty") // rule out empty
                 {
                     if (theGameMat[SP] == theGameMat[SP + 1] && theGameMat[SP] == theGameMat[SP + 2])
                      {
-
-
-                    let winner = lastPlayer;
-                    console.log(winner);
+                        let winner = lastPlayer;
+                        console.log(winner);
                     // document.getElementById("winner").appendChild();  // when picture is available
-                    document.getElementById("winner").textContent = lastPlayer;
-                    document.getElementById('players-turn').style.display = "none"; 
-                    document.getElementById("winner-notification").style.display = "grid";
-                     return true;
+                        document.getElementById("winner").textContent = lastPlayer;
+                        document.getElementById('players-turn').style.display = "none"; 
+                        document.getElementById("winner-notification").style.display = "grid";
+                        gameController.endGame();
+                        return true;
                      }
-                     else
+                    else
                      {
                      } 
                 }
-                else {}
-    
-       }
+                else 
+                {
 
-       //vertical check 
-       for (let vertPoint = 0; vertPoint <= 2; vertPoint += 1) 
-       {
-            let VSP = vertPoint;
-            if (theGameMat[VSP] != "empty") // rule out empty
-            {
-                //
-                if (theGameMat[VSP] == theGameMat[VSP + 3] && theGameMat[VSP] == theGameMat[VSP + 6])
-                 {
-                    let winner = lastPlayer;
-                    console.log(winner);
-                    document.getElementById("winner").textContent = lastPlayer;
-                    document.getElementById('players-turn').style.display = "none";
-                document.getElementById("winner-notification").style.display = "grid";
-                 return true;
-                 }
-                else
-                 {
-                 } 
+                }
             }
-            else {}
+        }
 
-        } 
+        function verticalCheck () {
+            for (let vertPoint = 0; vertPoint <= 2; vertPoint += 1) 
+            {
+                let VSP = vertPoint;
+                if (theGameMat[VSP] != "empty") // rule out empty
+                {
+                    if (theGameMat[VSP] == theGameMat[VSP + 3] && theGameMat[VSP] == theGameMat[VSP + 6])
+                    {
+                        let winner = lastPlayer;
+                        console.log(winner);
+                        document.getElementById("winner").textContent = lastPlayer;
+                        document.getElementById('players-turn').style.display = "none";
+                        document.getElementById("winner-notification").style.display = "grid";
+                        return true;
+                    }
+                    else
+                    {
+                    } 
+                }
+                else 
+                {
+                }
 
-        //diagnal check
-           let spot = 0; 
+            } 
+        }
 
+        function diagnalCheck () {
+            let spot = 0; 
                 if (theGameMat[spot] != "empty" && theGameMat[spot] == theGameMat[spot+4] && theGameMat[spot] == theGameMat[spot+8] )
                 {
                     let winner = lastPlayer;
@@ -130,62 +148,66 @@ const gameMat = (function ()
                 }
                 else 
                 {
-
+                    return false;
                 }
+            }
 
     }
+
+    function tieCheck () 
+    {
+        console.log("tieCheck");
+
+        if (checkForEmpty() == true)
+        {
+            return false;
+        }
+        else if (winnerCheck() == true) 
+        {
+            return false;
+        }
+        else // theres a tie woot! 
+        {
+            document.getElementById('tie-notification').style.display = "grid";
+            return true;
+        }
+
+        function checkForEmpty(){
+        for (spotCheck = 0; spotCheck <= theGameMat.length -1; spotCheck ++)
+            {
+                if (theGameMat[spotCheck] == "empty") // game not over found empty spot
+                {
+                    return true; 
+                }
+                else
+                {
+                }
+            }
+        }
+
+      
+    }
+    
 
 
     function playersTurnDisplay (player)
     {
-      document.getElementById('players-turn').style.display = "grid"; // Needed only once but okay .. 
-   
+
       if (player.name == "Inu") 
       {
-          if (document.getElementById('turn').lastChild) // if there was a last round player remove their image
-          {
-            document.getElementById('turn').firstChild.remove(); 
-            const playerGoing = document.createElement('img');
-            playerGoing.src = "Inu.jpeg"
-            playerGoing.className = "player";
-            document.getElementById('turn').appendChild(playerGoing);
-            return true;
-          }
-          else
-          {
-            const playerGoing = document.createElement('img');
-            playerGoing.src = "Inu.jpeg"
-            playerGoing.className = "player";
-            document.getElementById('turn').appendChild(playerGoing);
-            return true;
-          }
+
+        document.getElementById("crow").style.display = "none";// need to fix in the am
+        document.getElementById("dog").style.display = "grid";
 
       }
       else if (player.name == "Karasu")     
       {
-        if (document.getElementById('turn').lastChild)  // if there was a last round player remove their image
-        {
-            document.getElementById('turn').firstChild.remove();
-          const playerGoing = document.createElement('img');
-          playerGoing.src = "Karasu.jpeg"
-          playerGoing.className = "player";
-          document.getElementById('turn').appendChild(playerGoing);
-          return true;
-        }
-        else
-        {
-          const playerGoing = document.createElement('img');
-          playerGoing.src = "Karasu.jpeg"
-          playerGoing.className = "player";
-          document.getElementById('turn').appendChild(playerGoing);
-          return true;
-        }
-
+        document.getElementById("dog").style.display = "none";
+        document.getElementById("crow").style.display = "grid";// need to fix in the am
       } 
-      else  // failsafe bascase
+      else  // bascase // add more players later
       {
-      console.log("Nope");
-      return "Go Bye BYE game over"
+      return "No player to have a turn"
       }
     }
     
@@ -366,11 +388,11 @@ const gameController = (function ()
     
     function startGame () {
         let playerTurn = playerOne; // Initialize starting turn. 
-        gameMat.playersTurnDisplay (playerTurn); // Initialize display for first player
+      gameMat.playersTurnDisplay (playerTurn); // Initialize display for first player
+  
+ 
 
-
-
-        document.getElementById('container').addEventListener("click", function (e)
+        var select = document.getElementById('container').addEventListener("click", function playerSelect(e)
         {
 
         let matLocation = e.target.id;
@@ -406,8 +428,22 @@ const gameController = (function ()
 
         });
 
+
+
+
+
     } // start game function    
 
-    return {setWeapon, setPlayer, createPlayers, letsBegin,};
+
+    function endGame ()
+    {
+        //document.getElementById('container').removeEventListener("click", selectShit, select );
+        // remove listeners from game board
+        // populate a reset or play again button 
+        //
+
+    }
+
+    return {setWeapon, setPlayer, createPlayers, letsBegin, endGame};
 
 }) (); // game Controller module end 

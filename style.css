@@ -156,7 +156,7 @@ border-radius: 20px;
 {
 display: none;
 background-color: rgb(12, 26, 12);
-color: rgb(222, 241, 50);
+color: rgb(237, 238, 232);
 font-size: 40pt;
 text-align: center;
 text-shadow:   0px -6px 0 #212121,  
@@ -229,7 +229,7 @@ border-color: rgb(172, 13, 111);
 
 .start-button
 {
-background-color: rgb(114, 199, 233);
+background-color: rgb(179, 216, 231);
 border: solid 2px;
 border-color: rgb(10, 75, 29);
 border-radius: 2px;
@@ -248,7 +248,7 @@ width: 125px;
 background-color: rgb(10, 75, 29);
 border: solid 2px;
 border-radius: 2px;
-color: skyblue;
+color: rgb(179, 216, 231);
 height: 40px;
 padding: 2px;
 text-align: center;
@@ -275,4 +275,35 @@ border-color: rgb(172, 13, 111);
 {
 height: 90px;
 width: 90px;
+}
+
+.crow-turn
+{
+display: none;
+height: 90px;
+width: 90px;
+position: absolute;
+top: 60%; 
+left: 70%;
+z-index: 2;
+
+border-radius: 5px;
+border: solid;
+border-color: rgb(247, 243, 246);
+}
+
+.shiba-turn
+{
+    display: none;
+    height: 110px;
+    width: 160px;
+    position: absolute;
+    top: 60%; 
+    left: 20%;
+    z-index: 2;
+    
+    border-radius: 5px;
+    border: solid;
+    border-color: rgb(247, 243, 246);
+
 }
