@@ -21,15 +21,19 @@
     <body>
 
         <div id="player-selection-container" class="player-selection-container">
-            <div id="player-select-header" class="player-select-header">Player 1 choose your character!</div><br>
-            <div> <img id="Inu" class="player-select" src="Inu.jpeg" onclick="gameController.setPlayer('Inu')"><br>Inu-san<br> </div>
-            <div><img id="X" class="player-select-X" onclick="gameController.setWeapon('X')" img src="xpicture.png"><br>X's</div>
+            <div class="selections">
+                <div id="player-select-header" class="player-select-header">Choose your character!</div>
+                <div id="player-select-header" class="player-select-header"> And your weapon!</div>
+
+                <div> <img id="Inu" class="player-select" src="Inu.jpeg" onclick="gameController.setPlayer('Inu')"><br>Inu-san<br> </div>
+                <div><img id="X" class="player-select-X" onclick="gameController.setWeapon('X')" img src="xpicture.png"><br>X's</div>
 
 
            
-            <div><img id="Karasu" class="player-select" src="Karasu.jpeg" onclick="gameController.setPlayer('Karasu')"><br>Karasu-san</div>
-            <div><img id="O" class="player-select-O" onclick="gameController.setWeapon('O')" img src="opicture.png"><br>O's</div><br>
-            <button id="startGame" onclick="gameController.createPlayers()">I'm Ready and stuff</button>
+                <div><img id="Karasu" class="player-select" src="Karasu.jpeg" onclick="gameController.setPlayer('Karasu')"><br>Karasu-san</div>
+                <div><img id="O" class="player-select-O" onclick="gameController.setWeapon('O')" img src="opicture.png"><br>O's</div>
+            </div>
+            <div id="startGame" class="ready-button" onclick="gameController.createPlayers()">I'm ready</div>
          </div>
   
 <div id="players-turn" class="players-turn-window">
