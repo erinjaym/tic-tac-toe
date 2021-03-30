@@ -10,6 +10,7 @@
             <center><h1>Tic-Tac-Toe</h1>
                 (in Soni Highlands Japan)<br><br>
                 <div id="start-button" class="start-button" onclick="gameController.letsBegin()">START</div>
+                <div id="replay-button" class="reset-button" onclick="gameController.refreshPage()">Replay</div>
             </center> 
             <div id="container" class="container">
             </div>
@@ -34,7 +35,11 @@
 <div id="players-turn" class="players-turn-window">
     <div id="turn"></div>
 </div>
-<div id="winner-notification" class="winner-popup">Congratulations!<div id="winner"></div>is the winner!</div>
+<div id="winner-notification" class="winner-popup">Congratulations!
+    <div id="winner">
+        <img id="winner-pic-dog" class="winner-pic" src="Inu.jpeg">
+        <img id ="winner-pic-crow" class="winner-pic" src="Karasu.jpeg">
+    </div>is the winner!</div>
 <div id="tie-notification" class="winner-popup">TIE GAME!</div>
 <script src="ttt.js"> </script>
     

@@ -4,7 +4,7 @@
 //module attempt
 const gameMat = (function () 
 {
-    let lastPlayer = "ChoMama"
+    let lastPlayer = "placeholder"
     let theGameMat = new Array(9);
     const initialize = () => theGameMat.fill("empty", 0, 9);
     const playerSelectLocation = (playersName, playersWeapon, matLocation) =>  { 
@@ -55,19 +55,23 @@ const gameMat = (function ()
         }
     }
 
+
     function winnerCheck () 
     {  // can improve performance by adding a quick out in inner loop
-        // have winner check stop game if true!!!!! 
+        // winner check stops game if true!!!!! 
         if (horizontalCheck() == true)
-            {
+            {    
+                revealWinner();
                 return true;
             }
         else if (verticalCheck() == true)
         {
+            revealWinner();
             return true;
         }
         else if (diagnalCheck() == true)
         {
+            revealWinner();
             return true;
         }
         else {return false;}
@@ -80,13 +84,6 @@ const gameMat = (function ()
                 {
                     if (theGameMat[SP] == theGameMat[SP + 1] && theGameMat[SP] == theGameMat[SP + 2])
                      {
-                        let winner = lastPlayer;
-                        console.log(winner);
-                    // document.getElementById("winner").appendChild();  // when picture is available
-                        document.getElementById("winner").textContent = lastPlayer;
-                        document.getElementById('players-turn').style.display = "none"; 
-                        document.getElementById("winner-notification").style.display = "grid";
-                        gameController.endGame();
                         return true;
                      }
                     else
@@ -108,11 +105,6 @@ const gameMat = (function ()
                 {
                     if (theGameMat[VSP] == theGameMat[VSP + 3] && theGameMat[VSP] == theGameMat[VSP + 6])
                     {
-                        let winner = lastPlayer;
-                        console.log(winner);
-                        document.getElementById("winner").textContent = lastPlayer;
-                        document.getElementById('players-turn').style.display = "none";
-                        document.getElementById("winner-notification").style.display = "grid";
                         return true;
                     }
                     else
@@ -130,20 +122,10 @@ const gameMat = (function ()
             let spot = 0; 
                 if (theGameMat[spot] != "empty" && theGameMat[spot] == theGameMat[spot+4] && theGameMat[spot] == theGameMat[spot+8] )
                 {
-                    let winner = lastPlayer;
-                    console.log(winner);
-                    document.getElementById("winner").textContent = lastPlayer;
-                    document.getElementById('players-turn').style.display = "none";
-                    document.getElementById("winner-notification").style.display = "grid";
                     return true;
                 }
                 else if (theGameMat[spot +2] != "empty" && theGameMat[spot + 2] == theGameMat[spot+4] && theGameMat[spot + 2] == theGameMat[spot+6])
                 {
-                    let winner = lastPlayer;
-                    console.log(winner);
-                    document.getElementById("winner").textContent = lastPlayer;
-                    document.getElementById('players-turn').style.display = "none";
-                    document.getElementById("winner-notification").style.display = "grid";
                     return true;
                 }
                 else 
@@ -152,7 +134,29 @@ const gameMat = (function ()
                 }
             }
 
-    }
+            function revealWinner ()
+            {
+                if (lastPlayer == "Inu") // reveal dog pic
+                {
+                    document.getElementById('winner-pic-crow').remove();    // remove non winners
+                    document.getElementById("winner-notification").style.display = "grid"; //show popup
+                    document.getElementById("replay-button").style.display = "grid";
+                }
+                else if (lastPlayer == "Karasu") // reveal crow pic
+                {
+                    document.getElementById('winner-pic-dog').remove();
+                    document.getElementById("winner-notification").style.display = "grid";
+                    document.getElementById("replay-button").style.display = "grid";
+                }
+                else // in case more characters later on
+                {
+        
+                }
+        
+            }
+
+
+    } // end of winner check 
 
     function tieCheck () 
     {
@@ -193,22 +197,26 @@ const gameMat = (function ()
     function playersTurnDisplay (player)
     {
 
-      if (player.name == "Inu") 
-      {
+        if (winnerCheck() == true) // bascase // add more players later
+        {
+            document.getElementById("dog").style.display = "none";
+            document.getElementById("crow").style.display = "none";
+        }
 
-        document.getElementById("crow").style.display = "none";// need to fix in the am
-        document.getElementById("dog").style.display = "grid";
+        else if (player.name == "Inu") 
+        {
+            document.getElementById("crow").style.display = "none";// need to fix in the am
+            document.getElementById("dog").style.display = "grid";
+        }
+        else if (player.name == "Karasu")     
+        {
+            document.getElementById("dog").style.display = "none";
+            document.getElementById("crow").style.display = "grid";// need to fix in the am
+        } 
+        else  // spot for future players and basecase
+        {
 
-      }
-      else if (player.name == "Karasu")     
-      {
-        document.getElementById("dog").style.display = "none";
-        document.getElementById("crow").style.display = "grid";// need to fix in the am
-      } 
-      else  // bascase // add more players later
-      {
-      return "No player to have a turn"
-      }
+        }
     }
     
 
@@ -246,7 +254,7 @@ const gameController = (function ()
         playerOne = playerMaker(playerOneName, playerOneWeapon);
         setPlayerTwo();
         document.getElementById("player-selection-container").style.display = "none";
-        startGame(); // may move to later on in 
+        gamePlay().startGame(); // may move to later on in 
         return playerOne;
     }
 
@@ -384,66 +392,55 @@ const gameController = (function ()
 
     }
 
-
-    
-    function startGame () {
-        let playerTurn = playerOne; // Initialize starting turn. 
-      gameMat.playersTurnDisplay (playerTurn); // Initialize display for first player
-  
- 
-
-        var select = document.getElementById('container').addEventListener("click", function playerSelect(e)
-        {
-
-        let matLocation = e.target.id;
-
-
-        let playerSelection = gameMat.playerSelectLocation(playerTurn.name, playerTurn.weapon, matLocation);
-
-
-                if (playerSelection) // succesfull placement playerSelection is true
-                    { 
-      
-                        if(playerTurn == playerOne)
-                        {
-                        gameMat.playersTurnDisplay(playerTwo); // changes display with player swap
-                        return playerTurn = playerTwo;
-                        }
-
-                        else if (playerTurn == playerTwo)
-                        {
-                         gameMat.playersTurnDisplay(playerOne); // changes display with player swap
-                         return playerTurn = playerOne;
-                        }
-                        else {
-
-                        } // basecase
-
-                    }
-                
-                else // gameBoard said nope!
-                {
-
-                }
-
-        });
-
-
-
-
-
-    } // start game function    
-
-
-    function endGame ()
+    const gamePlay = (function () 
     {
-        //document.getElementById('container').removeEventListener("click", selectShit, select );
-        // remove listeners from game board
-        // populate a reset or play again button 
-        //
+            let playerTurn = "someones turn"; // will initialize with start game
+            let gameBoard = document.getElementById('container'); // create gameBoard for selection
 
+            
+            let startGame = function () { 
+                playerTurn = playerOne; // Initialize starting turn. 
+                gameMat.playersTurnDisplay (playerTurn); // Initialize display for first player
+                gameBoard.addEventListener("click", playerSelect);
+                return true;
+            } 
+    
+        function playerSelect (e)
+        {
+                let matLocation = e.target.id;
+                let playerSelection = gameMat.playerSelectLocation(playerTurn.name, playerTurn.weapon, matLocation);
+    
+                        if (playerSelection) // succesfull placement playerSelection is true
+                            { 
+                                if(playerTurn == playerOne)
+                                {
+                                gameMat.playersTurnDisplay(playerTwo); // changes display with player swap
+                                return playerTurn = playerTwo;
+                                }
+                                else if (playerTurn == playerTwo)
+                                {
+                                gameMat.playersTurnDisplay(playerOne); // changes display with player swap
+                                return playerTurn = playerOne;
+                                }
+                                else {
+                                } // basecase
+                            }
+                        else // gameBoard said nope!
+                        {
+                        }
+        }
+
+        return {startGame, playerSelect}
+    });
+        
+    function refreshPage () //               current call         gameController.gamePlay().endGame();
+    {
+    //        window.addEventListener("click", reloadPage);
+        location.reload();
     }
 
-    return {setWeapon, setPlayer, createPlayers, letsBegin, endGame};
+
+
+    return {setWeapon, setPlayer, createPlayers, letsBegin, gamePlay, refreshPage};
 
 }) (); // game Controller module end 
