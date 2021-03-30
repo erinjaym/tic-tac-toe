@@ -251,11 +251,20 @@ const gameController = (function ()
 
     function createPlayers ()
     {
+
+        if(playerOneName == "Not Selected" || playerOneWeapon == "Fists of fury") // check for selection
+        {
+            //dont do anything
+            alert('Please choose both a character and a weapon to play.');
+        }
+        else
+        {
         playerOne = playerMaker(playerOneName, playerOneWeapon);
         setPlayerTwo();
         document.getElementById("player-selection-container").style.display = "none";
         gamePlay().startGame(); // may move to later on in 
         return playerOne;
+        }
     }
 
     function letsBegin ()
