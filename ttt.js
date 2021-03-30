@@ -20,7 +20,7 @@ const gameMat = (function ()
             return true;
         }
     }
-    
+
    const display = () =>
     {
         let gameMatTracker = 0; 
@@ -377,8 +377,10 @@ const gameController = (function ()
     
         function playerSelect (e)
         {
-                let matLocation = e.target.id;
-                let playerSelection = gameMat.playerSelectLocation(playerTurn.name, playerTurn.weapon, matLocation);
+            let matLocation = e.target.id;
+                if (matLocation >= 0 && matLocation <= 8) // ensure selection is a mat location and not container itself
+                {
+                    let playerSelection = gameMat.playerSelectLocation(playerTurn.name, playerTurn.weapon, matLocation);
     
                         if (playerSelection) // succesfull placement playerSelection is true
                             { 
@@ -399,6 +401,8 @@ const gameController = (function ()
                         else // gameBoard said selection wasnt posible
                         {
                         }
+                }
+                else{} // do nothing if selection is container itself
         }
 
         return {startGame, playerSelect}
