@@ -30,16 +30,17 @@ width: 90px;
 z-index: 2;
 }
 
-
-
 html
 {
-background-image: url(soni2.jpeg);
+background: url(soni2.jpeg) no-repeat center center fixed;
 background-color: black;
-background-size: 100% 100%;
+background-size: cover;
 background-position: center;
 background-repeat: no-repeat;
 color: rgb(68, 112, 10);
+-webkit-background-size: cover;
+-moz-background-size: cover;
+-o-background-size: cover;
 }
 
 h1
@@ -153,7 +154,6 @@ background-color: rgb(158, 12, 12);
 border: solid;
 border-radius: 5px;
 height: 125px;
-radius: 50%;
 transition: 1s;
 width: 125px;
 }
